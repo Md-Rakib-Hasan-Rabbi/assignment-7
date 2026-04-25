@@ -1,21 +1,14 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 
 const statusClassMap = {
   overdue: 'badge badge-error badge-sm text-white',
   'on-track': 'badge badge-success badge-sm text-white',
   'almost due': 'badge badge-warning badge-sm text-white',
 };
-
-function getInitials(name) {
-  return name
-    .split(' ')
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join('')
-    .toUpperCase();
-}
 
 function formatStatus(status) {
   if (status === 'on-track') return 'On-Track';
@@ -68,11 +61,11 @@ export default function Home() {
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
           {friends.map((friend) => (
-            <article key={friend.id} className="card border border-base-300 bg-base-100 shadow-sm">
-              <div className="card-body items-center gap-3 py-6 text-center">
-                <div className="avatar placeholder">
-                  <div className="w-20 rounded-full bg-primary/20 text-primary">
-                    <span className="text-xl font-semibold">{getInitials(friend.name)}</span>
+            <Link key={friend.id} href={`/friends/${friend.id}`} className="card border border-base-300 bg-base-100 shadow-sm transition hover:shadow-md">
+              <article className="card-body items-center gap-3 py-6 text-center">
+                <div className="avatar">
+                  <div className="w-20 rounded-full ring-2 ring-base-200">
+                    <Image src={friend.picture} alt={`${friend.name} profile`} width={80} height={80} className="object-cover" />
                   </div>
                 </div>
 
@@ -88,8 +81,8 @@ export default function Home() {
                 </div>
 
                 <span className={statusClassMap[friend.status]}>{formatStatus(friend.status)}</span>
-              </div>
-            </article>
+              </article>
+            </Link>
           ))}
         </div>
       </div>
