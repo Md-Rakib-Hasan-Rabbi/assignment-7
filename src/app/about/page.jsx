@@ -1,13 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
-import { getTimelineEvents } from '../../lib/timelineStorage';
-
-const defaultEvents = [
-    { id: 'seed-1', type: 'text', friendName: 'Sarah Chen', date: '2026-03-28T09:00:00.000Z' },
-    { id: 'seed-2', type: 'video', friendName: 'Aisha Patel', date: '2026-03-23T09:00:00.000Z' },
-    { id: 'seed-3', type: 'call', friendName: 'Tom Baker', date: '2026-03-21T09:00:00.000Z' },
-];
+import { useState } from 'react';
 
 const eventConfig = {
     text: { icon: '💬', label: 'Text', tone: 'text-primary' },
@@ -25,28 +18,17 @@ function formatDate(dateValue) {
 
 export default function AboutPage() {
     const [filter, setFilter] = useState('all');
-    const [savedEvents, setSavedEvents] = useState(() => getTimelineEvents());
-
-    useEffect(() => {
-        function syncTimeline() {
-            setSavedEvents(getTimelineEvents());
+    const [savedEvents] = useState(() => {
+        try {
+            const raw = localStorage.getItem('keenkeeper.timeline.events');
+            return raw ? JSON.parse(raw) : [];
+        } catch {
+            return [];
         }
+    });
 
-        window.addEventListener('storage', syncTimeline);
-        return () => {
-            window.removeEventListener('storage', syncTimeline);
-        };
-    }, []);
-
-    const timelineItems = useMemo(() => {
-        const merged = [...savedEvents, ...defaultEvents].sort((a, b) => new Date(b.date) - new Date(a.date));
-
-        if (filter === 'all') {
-            return merged;
-        }
-
-        return merged.filter((item) => item.type === filter);
-    }, [savedEvents, filter]);
+    const sortedEvents = [...savedEvents].sort((a, b) => new Date(b.date) - new Date(a.date));
+    const timelineItems = filter === 'all' ? sortedEvents : sortedEvents.filter((item) => item.type === filter);
 
     return (
         <section className="mx-auto w-full max-w-5xl px-4 py-8 md:py-12">

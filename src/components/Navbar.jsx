@@ -45,7 +45,12 @@ export default function Navbar() {
 
               return (
                 <li key={item.label}>
-                  <Link className={`btn btn-sm ${isActive ? 'btn-primary' : 'btn-ghost'}`} href={item.href}>
+                  <Link
+                    className={`btn btn-sm ${
+                      isActive ? 'border-0 bg-[#244D3F] text-white hover:bg-[#1d3e33]' : 'btn-ghost text-[#244D3F] hover:bg-[#244D3F]/10'
+                    }`}
+                    href={item.href}
+                  >
                     <Image src={item.icon} alt="" width={18} height={18} aria-hidden="true" />
                     {item.label}
                   </Link>

@@ -3,11 +3,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import callIcon from '../../../../assets/call.png';
 import textIcon from '../../../../assets/text.png';
 import videoIcon from '../../../../assets/video.png';
-import { addTimelineEvent } from '../../../lib/timelineStorage';
 
 const statusClassMap = {
   overdue: 'badge badge-error badge-sm text-white',
@@ -56,38 +55,36 @@ export default function FriendDetailPage() {
     loadFriends();
   }, []);
 
-  useEffect(() => {
-    if (!savedType) {
-      return undefined;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      setSavedType('');
-    }, 2500);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [savedType]);
-
-  const friend = useMemo(() => {
-    const friendId = Number(params.id);
-    return friends.find((item) => item.id === friendId);
-  }, [friends, params.id]);
+  const friendId = Number(params.id);
+  const friend = friends.find((item) => item.id === friendId);
 
   function saveCheckIn(type) {
     if (!friend || (type !== 'call' && type !== 'video' && type !== 'text')) {
       return;
     }
 
-    addTimelineEvent({
-      type,
-      friendName: friend.name,
-      friendId: friend.id,
-      date: new Date().toISOString(),
-    });
+    try {
+      const raw = localStorage.getItem('keenkeeper.timeline.events');
+      const currentEvents = raw ? JSON.parse(raw) : [];
+      const createdAt = new Date().toISOString();
+
+      const newEvent = {
+        id: createdAt,
+        type,
+        friendName: friend.name,
+        friendId: friend.id,
+        date: createdAt,
+      };
+
+      localStorage.setItem('keenkeeper.timeline.events', JSON.stringify([newEvent, ...currentEvents]));
+    } catch {
+      return;
+    }
 
     setSavedType(type);
+    setTimeout(() => {
+      setSavedType('');
+    }, 2500);
   }
 
   if (isLoading) {

@@ -5,18 +5,18 @@ import instagramIcon from '../../assets/instagram.png';
 import twitterIcon from '../../assets/twitter.png';
 
 const socialLinks = [
-  { label: 'Instagram', href: '#', icon: instagramIcon },
-  { label: 'Facebook', href: '#', icon: facebookIcon },
-  { label: 'X', href: '#', icon: twitterIcon },
+  { label: 'Instagram', href: '', icon: instagramIcon },
+  { label: 'Facebook', href: '', icon: facebookIcon },
+  { label: 'X', href: '', icon: twitterIcon },
 ];
 
 export default function Footer() {
   return (
-    <footer className="bg-primary text-primary-content">
+    <footer className="bg-emerald-900 text-emerald-50">
       <div className="mx-auto w-full max-w-5xl px-4 py-10 md:py-12">
         <div className="text-center">
           <h2 className="text-6xl font-bold leading-none">KeenKeeper</h2>
-          <p className="mx-auto mt-4 max-w-3xl text-sm text-primary-content/80">
+          <p className="mx-auto mt-4 max-w-3xl text-sm text-emerald-100/85">
             Your personal shelf of meaningful connections. Browse, tend, and nurture the relationships that matter most.
           </p>
 
@@ -35,17 +35,17 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-10 border-t border-primary-content/30 pt-5 text-sm text-primary-content/70">
+        <div className="mt-10 border-t border-emerald-100/30 pt-5 text-sm text-emerald-100/70">
           <div className="flex flex-col items-center justify-between gap-3 md:flex-row">
             <p>© 2026 KeenKeeper. All rights reserved.</p>
             <div className="flex items-center gap-6">
-              <Link href="" className="hover:underline">
+              <Link href="" className="hover:text-emerald-50 hover:underline">
                 Privacy Policy
               </Link>
-              <Link href="" className="hover:underline">
+              <Link href="" className="hover:text-emerald-50 hover:underline">
                 Terms of Service
               </Link>
-              <Link href="" className="hover:underline">
+              <Link href="" className="hover:text-emerald-50 hover:underline">
                 Cookies
               </Link>
             </div>

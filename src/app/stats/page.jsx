@@ -1,8 +1,7 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
-import { getTimelineEvents } from '../../lib/timelineStorage';
 
 const chartColors = {
   text: '#7C3AED',
@@ -11,38 +10,32 @@ const chartColors = {
 };
 
 export default function StatsPage() {
-  const [events, setEvents] = useState(() => getTimelineEvents());
-
-  useEffect(() => {
-    function syncEvents() {
-      setEvents(getTimelineEvents());
+  const [events] = useState(() => {
+    try {
+      const raw = localStorage.getItem('keenkeeper.timeline.events');
+      return raw ? JSON.parse(raw) : [];
+    } catch {
+      return [];
     }
+  });
 
-    window.addEventListener('storage', syncEvents);
-    return () => {
-      window.removeEventListener('storage', syncEvents);
-    };
-  }, []);
+  const counts = {
+    text: 0,
+    call: 0,
+    video: 0,
+  };
 
-  const chartData = useMemo(() => {
-    const counts = {
-      text: 0,
-      call: 0,
-      video: 0,
-    };
-
-    for (const event of events) {
-      if (event.type === 'text' || event.type === 'call' || event.type === 'video') {
-        counts[event.type] += 1;
-      }
+  for (const event of events) {
+    if (event.type === 'text' || event.type === 'call' || event.type === 'video') {
+      counts[event.type] += 1;
     }
+  }
 
-    return [
-      { name: 'Text', key: 'text', value: counts.text },
-      { name: 'Call', key: 'call', value: counts.call },
-      { name: 'Video', key: 'video', value: counts.video },
-    ];
-  }, [events]);
+  const chartData = [
+    { name: 'Text', key: 'text', value: counts.text },
+    { name: 'Call', key: 'call', value: counts.call },
+    { name: 'Video', key: 'video', value: counts.video },
+  ];
 
   const hasData = chartData.some((item) => item.value > 0);
 
