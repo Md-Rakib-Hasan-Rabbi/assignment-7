@@ -4,6 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useEffect, useMemo, useState } from 'react';
+import callIcon from '../../../../assets/call.png';
+import textIcon from '../../../../assets/text.png';
+import videoIcon from '../../../../assets/video.png';
 
 const statusClassMap = {
   overdue: 'badge badge-error badge-sm text-white',
@@ -19,15 +22,25 @@ function formatStatus(status) {
     .join(' ');
 }
 
+function formatDate(dateString) {
+  return new Intl.DateTimeFormat('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  }).format(new Date(dateString));
+}
+
 export default function FriendDetailPage() {
   const params = useParams();
   const [friends, setFriends] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadFriends() {
       const response = await fetch('/friends.json');
       const data = await response.json();
       setFriends(data);
+      setIsLoading(false);
     }
 
     loadFriends();
@@ -37,6 +50,14 @@ export default function FriendDetailPage() {
     const friendId = Number(params.id);
     return friends.find((item) => item.id === friendId);
   }, [friends, params.id]);
+
+  if (isLoading) {
+    return (
+      <section className="mx-auto w-full max-w-7xl rounded-md border border-base-300 bg-base-100 p-8 text-center">
+        <span className="loading loading-spinner loading-lg text-primary" />
+      </section>
+    );
+  }
 
   if (!friend) {
     return (
@@ -51,57 +72,107 @@ export default function FriendDetailPage() {
   }
 
   return (
-    <section className="mx-auto w-full max-w-3xl rounded-md border border-base-300 bg-base-100 p-6 md:p-8">
-      <div className="flex flex-col items-center gap-4 text-center">
-        <div className="avatar">
-          <div className="w-28 rounded-full ring-2 ring-base-200">
-            <Image src={friend.picture} alt={`${friend.name} profile`} width={112} height={112} className="object-cover" />
+    <section className="mx-auto w-full max-w-7xl rounded-md bg-base-200/60 p-4 md:p-6">
+      <div className="grid grid-cols-1 gap-4 lg:grid-cols-[300px_1fr]">
+        <div className="space-y-3">
+          <article className="card border border-base-300 bg-base-100 shadow-sm">
+            <div className="card-body items-center gap-2 py-6 text-center">
+              <div className="avatar">
+                <div className="w-24 rounded-full ring-2 ring-base-200">
+                  <Image src={friend.picture} alt={`${friend.name} profile`} width={96} height={96} className="object-cover" />
+                </div>
+              </div>
+
+              <h1 className="mt-2 text-3xl font-bold text-base-content">{friend.name}</h1>
+
+              <span className={statusClassMap[friend.status]}>{formatStatus(friend.status)}</span>
+
+              <div className="flex flex-wrap justify-center gap-2">
+                {friend.tags.map((tag) => (
+                  <span key={tag} className="badge badge-success badge-sm badge-outline">
+                    {tag.toUpperCase()}
+                  </span>
+                ))}
+              </div>
+
+              <p className="mt-1 text-base italic text-base-content/70">&quot;{friend.bio}&quot;</p>
+              <p className="text-sm text-base-content/50">Preferred: email</p>
+            </div>
+          </article>
+
+          <button type="button" className="btn w-full justify-center border-base-300 bg-base-100 font-medium text-base-content hover:bg-base-200">
+            Snooze 2 Weeks
+          </button>
+          <button type="button" className="btn w-full justify-center border-base-300 bg-base-100 font-medium text-base-content hover:bg-base-200">
+            Archive
+          </button>
+          <button type="button" className="btn btn-outline btn-error w-full justify-center font-medium">
+            Delete
+          </button>
+        </div>
+
+        <div className="space-y-4">
+          <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+            <article className="card border border-base-300 bg-base-100 shadow-sm">
+              <div className="card-body items-center py-6 text-center">
+                <p className="text-5xl font-bold text-primary">{friend.days_since_contact}</p>
+                <p className="text-sm text-base-content/70">Days Since Contact</p>
+              </div>
+            </article>
+
+            <article className="card border border-base-300 bg-base-100 shadow-sm">
+              <div className="card-body items-center py-6 text-center">
+                <p className="text-5xl font-bold text-primary">{friend.goal}</p>
+                <p className="text-sm text-base-content/70">Goal (Days)</p>
+              </div>
+            </article>
+
+            <article className="card border border-base-300 bg-base-100 shadow-sm">
+              <div className="card-body items-center py-6 text-center">
+                <p className="text-4xl font-bold text-primary">{formatDate(friend.next_due_date)}</p>
+                <p className="text-sm text-base-content/70">Next Due</p>
+              </div>
+            </article>
           </div>
+
+          <article className="card border border-base-300 bg-base-100 shadow-sm">
+            <div className="card-body py-5">
+              <div className="flex items-center justify-between">
+                <h2 className="text-2xl font-semibold text-primary">Relationship Goal</h2>
+                <button type="button" className="btn btn-xs border-base-300 bg-base-200 text-base-content">
+                  Edit
+                </button>
+              </div>
+              <p className="text-lg text-base-content/80">
+                Connect every <span className="font-bold">{friend.goal} days</span>
+              </p>
+            </div>
+          </article>
+
+          <article className="card border border-base-300 bg-base-100 shadow-sm">
+            <div className="card-body py-5">
+              <h2 className="text-2xl font-semibold text-primary">Quick Check-In</h2>
+
+              <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
+                <button type="button" className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
+                  <Image src={callIcon} alt="" width={22} height={22} aria-hidden="true" />
+                  <span>Call</span>
+                </button>
+
+                <button type="button" className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
+                  <Image src={textIcon} alt="" width={22} height={22} aria-hidden="true" />
+                  <span>Text</span>
+                </button>
+
+                <button type="button" className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
+                  <Image src={videoIcon} alt="" width={22} height={22} aria-hidden="true" />
+                  <span>Video</span>
+                </button>
+              </div>
+            </div>
+          </article>
         </div>
-
-        <h1 className="text-4xl font-bold text-base-content">{friend.name}</h1>
-        <p className="text-base text-base-content/60">{friend.email}</p>
-
-        <div className="flex flex-wrap justify-center gap-2">
-          {friend.tags.map((tag) => (
-            <span key={tag} className="badge badge-success badge-sm badge-outline">
-              {tag.toUpperCase()}
-            </span>
-          ))}
-        </div>
-
-        <span className={statusClassMap[friend.status]}>{formatStatus(friend.status)}</span>
       </div>
-
-      <div className="mt-8 grid grid-cols-1 gap-4 md:grid-cols-2">
-        <article className="card border border-base-300 bg-base-200/40">
-          <div className="card-body py-4">
-            <p className="text-sm text-base-content/60">Days Since Contact</p>
-            <p className="text-3xl font-bold text-base-content">{friend.days_since_contact}</p>
-          </div>
-        </article>
-
-        <article className="card border border-base-300 bg-base-200/40">
-          <div className="card-body py-4">
-            <p className="text-sm text-base-content/60">Contact Goal (days)</p>
-            <p className="text-3xl font-bold text-base-content">{friend.goal}</p>
-          </div>
-        </article>
-
-        <article className="card border border-base-300 bg-base-200/40 md:col-span-2">
-          <div className="card-body py-4">
-            <p className="text-sm text-base-content/60">Next Due Date</p>
-            <p className="text-xl font-semibold text-base-content">{friend.next_due_date}</p>
-          </div>
-        </article>
-      </div>
-
-      <article className="card mt-4 border border-base-300 bg-base-200/40">
-        <div className="card-body py-4">
-          <p className="text-sm text-base-content/60">Bio</p>
-          <p className="text-base text-base-content">{friend.bio}</p>
-        </div>
-      </article>
     </section>
   );
 }
