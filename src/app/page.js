@@ -20,12 +20,22 @@ function formatStatus(status) {
 
 export default function Home() {
   const [friends, setFriends] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function loadFriends() {
-      const response = await fetch('/friends.json');
-      const data = await response.json();
-      setFriends(data);
+      try {
+        const response = await fetch('/friends.json');
+        if (!response.ok) {
+          throw new Error('Failed to load friends');
+        }
+        const data = await response.json();
+        setFriends(Array.isArray(data) ? data : []);
+      } catch {
+        setFriends([]);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     loadFriends();
@@ -42,6 +52,15 @@ export default function Home() {
       { value: friends.length, label: 'Interactions This Month' },
     ];
   }, [friends]);
+
+  if (isLoading) {
+    return (
+      <section className="mx-auto w-full max-w-7xl rounded-md border border-base-300 bg-base-100 p-10 text-center">
+        <span className="loading loading-spinner loading-lg text-primary" />
+        <p className="mt-3 text-base-content/70">Loading friends...</p>
+      </section>
+    );
+  }
 
   return (
     <section className="mx-auto w-full max-w-7xl rounded-md border border-base-300 bg-base-200/40">

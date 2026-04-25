@@ -39,14 +39,36 @@ export default function FriendDetailPage() {
 
   useEffect(() => {
     async function loadFriends() {
-      const response = await fetch('/friends.json');
-      const data = await response.json();
-      setFriends(data);
-      setIsLoading(false);
+      try {
+        const response = await fetch('/friends.json');
+        if (!response.ok) {
+          throw new Error('Failed to load friends');
+        }
+        const data = await response.json();
+        setFriends(Array.isArray(data) ? data : []);
+      } catch {
+        setFriends([]);
+      } finally {
+        setIsLoading(false);
+      }
     }
 
     loadFriends();
   }, []);
+
+  useEffect(() => {
+    if (!savedType) {
+      return undefined;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setSavedType('');
+    }, 2500);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [savedType]);
 
   const friend = useMemo(() => {
     const friendId = Number(params.id);
@@ -186,12 +208,18 @@ export default function FriendDetailPage() {
                   <span>Video</span>
                 </button>
               </div>
-
-              {savedType && <p className="text-sm text-success">Saved {savedType} interaction to Timeline.</p>}
             </div>
           </article>
         </div>
       </div>
+
+      {savedType && (
+        <div className="toast toast-end toast-top z-50">
+          <div className="alert alert-success">
+            <span>{savedType[0].toUpperCase() + savedType.slice(1)} interaction saved to Timeline.</span>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
