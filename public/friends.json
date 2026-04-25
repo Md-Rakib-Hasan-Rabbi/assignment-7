@@ -1,0 +1,98 @@
+[
+  {
+    "id": 1,
+    "name": "Ariana Chowdhury",
+    "picture": "https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=400&q=80",
+    "email": "ariana.chowdhury@gmail.com",
+    "days_since_contact": 21,
+    "status": "overdue",
+    "tags": ["university", "hiking"],
+    "bio": "Ariana and I studied computer science together at DU. We still plan occasional weekend hill walks when schedules align.",
+    "goal": 14,
+    "next_due_date": "2026-04-18"
+  },
+  {
+    "id": 2,
+    "name": "Sabbir Rahman",
+    "picture": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+    "email": "sabbir.rahman@outlook.com",
+    "days_since_contact": 13,
+    "status": "almost due",
+    "tags": ["work", "startup"],
+    "bio": "Sabbir is a former teammate from my first product role. We exchange feedback on side projects and career goals.",
+    "goal": 14,
+    "next_due_date": "2026-04-26"
+  },
+  {
+    "id": 3,
+    "name": "Nadia Islam",
+    "picture": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80",
+    "email": "nadia.islam@proton.me",
+    "days_since_contact": 5,
+    "status": "on-track",
+    "tags": ["book club", "close friend"],
+    "bio": "Nadia hosts our monthly reading circle. We regularly check in to swap book notes and recommend new titles.",
+    "goal": 14,
+    "next_due_date": "2026-05-05"
+  },
+  {
+    "id": 4,
+    "name": "Tanvir Hasan",
+    "picture": "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
+    "email": "tanvir.hasan@yahoo.com",
+    "days_since_contact": 19,
+    "status": "overdue",
+    "tags": ["football", "school friend"],
+    "bio": "Tanvir and I have played weekend football together since school. We usually catch up after every local league season.",
+    "goal": 14,
+    "next_due_date": "2026-04-20"
+  },
+  {
+    "id": 5,
+    "name": "Mehjabeen Noor",
+    "picture": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
+    "email": "mehjabeen.noor@gmail.com",
+    "days_since_contact": 12,
+    "status": "almost due",
+    "tags": ["design", "mentor"],
+    "bio": "Mehjabeen mentored me in product design interviews. We reconnect to review portfolios and discuss industry trends.",
+    "goal": 14,
+    "next_due_date": "2026-04-27"
+  },
+  {
+    "id": 6,
+    "name": "Farhan Kabir",
+    "picture": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "email": "farhan.kabir@icloud.com",
+    "days_since_contact": 4,
+    "status": "on-track",
+    "tags": ["travel", "photography"],
+    "bio": "Farhan is my travel planning partner. We stay in touch to map photo spots and budget routes for short trips.",
+    "goal": 14,
+    "next_due_date": "2026-05-06"
+  },
+  {
+    "id": 7,
+    "name": "Ishrat Jahan",
+    "picture": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=400&q=80",
+    "email": "ishrat.jahan@mail.com",
+    "days_since_contact": 16,
+    "status": "overdue",
+    "tags": ["volunteering", "community"],
+    "bio": "Ishrat and I volunteer at neighborhood education events. We usually coordinate supplies and student activities together.",
+    "goal": 14,
+    "next_due_date": "2026-04-23"
+  },
+  {
+    "id": 8,
+    "name": "Zubair Ahmed",
+    "picture": "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80",
+    "email": "zubair.ahmed@gmail.com",
+    "days_since_contact": 8,
+    "status": "on-track",
+    "tags": ["gaming", "cousin"],
+    "bio": "Zubair is my cousin and long-time co-op gaming buddy. We check in weekly, even during busy work periods.",
+    "goal": 14,
+    "next_due_date": "2026-05-02"
+  }
+]
