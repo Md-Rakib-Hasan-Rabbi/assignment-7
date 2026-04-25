@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import callIcon from '../../../../assets/call.png';
 import textIcon from '../../../../assets/text.png';
 import videoIcon from '../../../../assets/video.png';
+import { addTimelineEvent } from '../../../lib/timelineStorage';
 
 const statusClassMap = {
   overdue: 'badge badge-error badge-sm text-white',
@@ -34,6 +35,7 @@ export default function FriendDetailPage() {
   const params = useParams();
   const [friends, setFriends] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [savedType, setSavedType] = useState('');
 
   useEffect(() => {
     async function loadFriends() {
@@ -50,6 +52,21 @@ export default function FriendDetailPage() {
     const friendId = Number(params.id);
     return friends.find((item) => item.id === friendId);
   }, [friends, params.id]);
+
+  function saveCheckIn(type) {
+    if (!friend || (type !== 'call' && type !== 'video' && type !== 'text')) {
+      return;
+    }
+
+    addTimelineEvent({
+      type,
+      friendName: friend.name,
+      friendId: friend.id,
+      date: new Date().toISOString(),
+    });
+
+    setSavedType(type);
+  }
 
   if (isLoading) {
     return (
@@ -154,21 +171,23 @@ export default function FriendDetailPage() {
               <h2 className="text-2xl font-semibold text-primary">Quick Check-In</h2>
 
               <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
-                <button type="button" className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
+                <button type="button" onClick={() => saveCheckIn('call')} className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
                   <Image src={callIcon} alt="" width={22} height={22} aria-hidden="true" />
                   <span>Call</span>
                 </button>
 
-                <button type="button" className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
+                <button type="button" onClick={() => saveCheckIn('text')} className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
                   <Image src={textIcon} alt="" width={22} height={22} aria-hidden="true" />
                   <span>Text</span>
                 </button>
 
-                <button type="button" className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
+                <button type="button" onClick={() => saveCheckIn('video')} className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">
                   <Image src={videoIcon} alt="" width={22} height={22} aria-hidden="true" />
                   <span>Video</span>
                 </button>
               </div>
+
+              {savedType && <p className="text-sm text-success">Saved {savedType} interaction to Timeline.</p>}
             </div>
           </article>
         </div>
