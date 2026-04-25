@@ -90,7 +90,7 @@ export default function FriendDetailPage() {
   if (isLoading) {
     return (
       <section className="mx-auto w-full max-w-7xl rounded-md border border-base-300 bg-base-100 p-8 text-center">
-        <span className="loading loading-spinner loading-lg text-primary" />
+        <span className="loading loading-spinner loading-lg text-[#244D3F]" />
       </section>
     );
   }
@@ -100,7 +100,7 @@ export default function FriendDetailPage() {
       <section className="mx-auto w-full max-w-3xl rounded-md border border-base-300 bg-base-100 p-8 text-center">
         <h1 className="text-3xl font-bold text-base-content">Friend not found</h1>
         <p className="mt-2 text-base-content/60">This profile does not exist in your data file.</p>
-        <Link href="/" className="btn btn-primary mt-6">
+        <Link href="/" className="btn mt-6 border-0 bg-[#244D3F] text-white hover:bg-[#1d3e33]">
           Back to Home
         </Link>
       </section>
@@ -151,21 +151,21 @@ export default function FriendDetailPage() {
           <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
             <article className="card border border-base-300 bg-base-100 shadow-sm">
               <div className="card-body items-center py-6 text-center">
-                <p className="text-5xl font-bold text-primary">{friend.days_since_contact}</p>
+                <p className="text-5xl font-bold text-[#244D3F]">{friend.days_since_contact}</p>
                 <p className="text-sm text-base-content/70">Days Since Contact</p>
               </div>
             </article>
 
             <article className="card border border-base-300 bg-base-100 shadow-sm">
               <div className="card-body items-center py-6 text-center">
-                <p className="text-5xl font-bold text-primary">{friend.goal}</p>
+                <p className="text-5xl font-bold text-[#244D3F]">{friend.goal}</p>
                 <p className="text-sm text-base-content/70">Goal (Days)</p>
               </div>
             </article>
 
             <article className="card border border-base-300 bg-base-100 shadow-sm">
               <div className="card-body items-center py-6 text-center">
-                <p className="text-4xl font-bold text-primary">{formatDate(friend.next_due_date)}</p>
+                <p className="text-4xl font-bold text-[#244D3F]">{formatDate(friend.next_due_date)}</p>
                 <p className="text-sm text-base-content/70">Next Due</p>
               </div>
             </article>
@@ -174,7 +174,7 @@ export default function FriendDetailPage() {
           <article className="card border border-base-300 bg-base-100 shadow-sm">
             <div className="card-body py-5">
               <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-semibold text-primary">Relationship Goal</h2>
+                <h2 className="text-2xl font-semibold text-[#244D3F]">Relationship Goal</h2>
                 <button type="button" className="btn btn-xs border-base-300 bg-base-200 text-base-content">
                   Edit
                 </button>
@@ -187,7 +187,7 @@ export default function FriendDetailPage() {
 
           <article className="card border border-base-300 bg-base-100 shadow-sm">
             <div className="card-body py-5">
-              <h2 className="text-2xl font-semibold text-primary">Quick Check-In</h2>
+              <h2 className="text-2xl font-semibold text-[#244D3F]">Quick Check-In</h2>
 
               <div className="grid grid-cols-1 gap-3 md:grid-cols-3">
                 <button type="button" onClick={() => saveCheckIn('call')} className="btn h-20 flex-col border-base-300 bg-base-200 text-base-content hover:bg-base-300">

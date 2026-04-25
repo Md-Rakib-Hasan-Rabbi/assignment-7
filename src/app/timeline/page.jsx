@@ -3,9 +3,9 @@
 import { useState } from 'react';
 
 const eventConfig = {
-    text: { icon: '💬', label: 'Text', tone: 'text-primary' },
-    video: { icon: '📹', label: 'Video', tone: 'text-primary' },
-    call: { icon: '📞', label: 'Call', tone: 'text-primary' },
+    text: { icon: '💬', label: 'Text', tone: 'text-[#244D3F]' },
+    video: { icon: '📹', label: 'Video', tone: 'text-[#244D3F]' },
+    call: { icon: '📞', label: 'Call', tone: 'text-[#244D3F]' },
 };
 
 function formatDate(dateValue) {

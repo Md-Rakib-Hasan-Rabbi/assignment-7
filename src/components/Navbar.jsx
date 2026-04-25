@@ -15,7 +15,7 @@ const navItems = [
   },
   {
     label: 'Timeline',
-    href: '/about',
+    href: '/timeline',
     icon: clockIcon,
   },
   {

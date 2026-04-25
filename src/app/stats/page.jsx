@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 const chartColors = {
@@ -9,15 +9,34 @@ const chartColors = {
   video: '#34A86A',
 };
 
+function readTimelineEvents() {
+  try {
+    const raw = localStorage.getItem('keenkeeper.timeline.events');
+    return raw ? JSON.parse(raw) : [];
+  } catch {
+    return [];
+  }
+}
+
 export default function StatsPage() {
-  const [events] = useState(() => {
-    try {
-      const raw = localStorage.getItem('keenkeeper.timeline.events');
-      return raw ? JSON.parse(raw) : [];
-    } catch {
-      return [];
+  const [events, setEvents] = useState(() => readTimelineEvents());
+
+  useEffect(() => {
+    function refreshEvents() {
+      setEvents(readTimelineEvents());
     }
-  });
+
+    window.addEventListener('storage', refreshEvents);
+    window.addEventListener('focus', refreshEvents);
+
+    const intervalId = window.setInterval(refreshEvents, 2000);
+
+    return () => {
+      window.removeEventListener('storage', refreshEvents);
+      window.removeEventListener('focus', refreshEvents);
+      window.clearInterval(intervalId);
+    };
+  }, []);
 
   const counts = {
     text: 0,
@@ -44,7 +63,7 @@ export default function StatsPage() {
       <h1 className="text-6xl font-bold text-base-content">Friendship Analytics</h1>
 
       <article className="mt-6 rounded-md border border-base-300 bg-base-100 p-6 md:p-8">
-        <h2 className="text-3xl font-semibold text-primary">By Interaction Type</h2>
+        <h2 className="text-3xl font-semibold text-[#244D3F]">By Interaction Type</h2>
 
         <div className="mt-6 h-96 w-full">
           <ResponsiveContainer width="100%" height="100%">
